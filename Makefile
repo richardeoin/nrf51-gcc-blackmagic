@@ -126,7 +126,8 @@ ifdef USE_SOFTDEVICE
     INCLUDE_PATH	+= $(SDK_INCLUDE_PATH)app_common/
     INCLUDE_PATH	+= $(SDK_INCLUDE_PATH)sd_common/
 
-    SOFTDEVICE		:= $(wildcard softdevice/$(USE_SOFTDEVICE)*.hex)
+    SOFTDEVICE		:= $(wildcard softdevice/$(USE_SOFTDEVICE)*_softdevice.hex)
+    SOFTD_SOURCES	:= softdevice/uicr/$(basename $(notdir $(SOFTDEVICE)))_uicr.c
 else
     USE_SOFTDEVICE = blank
 endif
@@ -191,7 +192,7 @@ TARGET		:= $(OUTPUT_PATH)$(addsuffix _$(USE_SOFTDEVICE), $(PROJECT_NAME))
 #
 VPATH		= $(SOURCE_PATH)
 TREE_SOURCES	= $(shell $(FIND) $(SOURCE_TREE) -name '*.[csS]')
-SOURCES 	= $(STARTUP) $(SYSTEMDEF) $(TREE_SOURCES) $(APP_SOURCES)
+SOURCES 	= $(STARTUP) $(SYSTEMDEF) $(TREE_SOURCES) $(APP_SOURCES) $(SOFTD_SOURCES)
 
 # Translate this list of sources into a list of required objects in
 # the output directory.
@@ -253,14 +254,13 @@ $(OUTPUT_PATH)%.o: %.s
 # Generate the main build artifact.
 #
 # A .elf containing all the symbols (i.e. debugging information if the compiler
-# / linker was run with -g) is created, alongside .hex and .bin files. A just
+# / linker was run with -g) is created, alongside an intel hex file. A just
 # about human-readable .map is also created.
 #
 $(TARGET).elf: $(OBJECTS) $(LINKERS) gdbscript Makefile config.mk
 	@$(ECHO)
 	@$(ECHO) 'Linking $@...'
 	$(CC) $(LDFLAGS) $(addprefix -T,$(LINKERS)) -Wl,-Map,$(@:.elf=.map) -o $@ $(OBJECTS)
-	@$(OBJCOPY) -O binary $@ $(@:.elf=.bin)
 	@$(OBJCOPY) -O ihex $@ $(@:.elf=.hex)
 	@$(ECHO)
 	$(SIZE) $@

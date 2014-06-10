@@ -29,6 +29,17 @@ GROUP(libgcc.a libc.a libm.a libnosys.a)
  */
 ENTRY(Reset_Handler)
 
+/* UCIR Memory Region Definitions
+ */
+MEMORY
+{
+  CLENR0 (wr)   : ORIGIN = 0x10001000, LENGTH = 0x4
+  RPBCONF (wr)  : ORIGIN = 0x10001004, LENGTH = 0x4
+  XTALFREQ (wr) : ORIGIN = 0x10001008, LENGTH = 0x4
+  FWID (wr)     : ORIGIN = 0x10001010, LENGTH = 0x4
+  CUSTOM (wr)	: ORIGIN = 0x10001080, LENGTH = 0x80
+}
+
 SECTIONS
 {
     .text :
@@ -58,7 +69,7 @@ SECTIONS
         KEEP(*(.eh_frame*))
     } > FLASH
 
-    
+
     .ARM.extab :
     {
         *(.ARM.extab* .gnu.linkonce.armextab.*)
@@ -72,6 +83,13 @@ SECTIONS
     __exidx_end = .;
 
     __etext = .;
+
+    /* UICR sections */
+    .uicr.clenr0 :	{ KEEP(*(.clenr0*))   } > CLENR0
+    .uicr.rpbconf :	{ KEEP(*(.rpbconf*))  } > RPBCONF
+    .uicr.xtalfreq :	{ KEEP(*(.xtalfreq*)) } > XTALFREQ
+    .uicr.fwid :	{ KEEP(*(.fwid*))     } > FWID
+    .uicr.custom :	{ KEEP(*(.custom*))   } > CUSTOM
 
     .data : AT (__etext)
     {

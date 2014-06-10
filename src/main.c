@@ -23,6 +23,7 @@
  */
 
 #include "nrf.h"
+#include "uicr.h"
 #include <stdint.h>
 #include <stdbool.h>
 
