@@ -63,7 +63,6 @@ To download code run
 
 ```
 monitor erase_mass
-\# Only required if you are using a softdevice
 load_softdevice
 load
 ```
