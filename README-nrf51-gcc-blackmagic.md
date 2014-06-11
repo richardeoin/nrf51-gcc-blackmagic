@@ -71,7 +71,7 @@ load
 If the `load` command fails on a `uicr` section then you may not have
 blackmagic firmware that supports the `uicr` region. Either upgrade
 your blackmagic firmware or comment the UICR definition lines in
-[`inc/uicr`](inc/uicr) and
+[`inc/uicr.h`](inc/uicr.h) and
 `softdevice/uicr/<softdevice>_softdevice_uicr.c`.
 
 ## Emacs ##
