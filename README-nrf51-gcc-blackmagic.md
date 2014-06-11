@@ -1,4 +1,7 @@
-TODO
+## nrf51-gcc-blackmagic ##
+
+A simple GCC setup for nRF51 development, intended for use with the
+[`blackmagic`](https://github.com/gsmcmullin/blackmagic) debug probe.
 
 ## Prerequisites ##
 
@@ -7,7 +10,7 @@ utilities are required: `cat`, `echo`, `find`, `grep`, `mkdir`, `rm`, `sed` and
 `shuf`. If you're running any sensible desktop linux then these will already be
 installed.
 
-You will need to aquire
+You will also need to aquire
 [GNU Tools for ARM Embedded Processors](https://launchpad.net/gcc-arm-embedded/).
 
 ##### On Ubuntu
@@ -16,6 +19,31 @@ You will need to aquire
 sudo add-apt-repository ppa:terry.guo/gcc-arm-embedded
 sudo apt-get update && sudo apt-get install gcc-arm-none-eabi
 ```
+
+## Usage ##
+
+The [`sdk/`](sdk/) and [`softdevice/`](softdevice/) folders need to be
+populated with the downloads from Nordic Semiconductor's website. More
+details can be found in the README.md files in each folder.
+
+User Information Configuation Register (UICR) settings for any
+softdevice need to be set in `uicr/<softdevice>_softdevice_uicr.c`.
+
+### Project Options ###
+
+[`config.mk`](config.mk) allows configuation for individual
+projects. In particular the `PROJECT_NAME` and `USE_SOFTDEVICE`
+variables need to be set.
+
+### Compiling ###
+
+`make`
+
+### Download ###
+
+Run `arm-none-eabi-gdb`. If you have set `BLACKMAGIC_PATH` in
+[`config.mk`](config.mk) then gdb will attempt to connect to the
+blackmagic debugger.
 
 ## Emacs ##
 
