@@ -1,7 +1,7 @@
 ## nrf51-gcc-blackmagic ##
 
 A simple GCC setup for nRF51 development, intended for use with the
-[`blackmagic`](https://github.com/gsmcmullin/blackmagic) debug probe.
+[blackmagic debug probe](https://github.com/gsmcmullin/blackmagic).
 
 ## Prerequisites ##
 
@@ -43,7 +43,36 @@ variables need to be set.
 
 Run `arm-none-eabi-gdb`. If you have set `BLACKMAGIC_PATH` in
 [`config.mk`](config.mk) then gdb will attempt to connect to the
-blackmagic debugger.
+blackmagic debugger. Otherwise you can use the `blackmagic` command to
+connect a `/dev/ttyACM<n>` device. For example `blackmagic 0` will
+connect to a blackmagic at `/dev/ttyACM0`.
+
+To attach to the nRF51 chip itself you will need to run something like
+
+```
+monitor swdp_scan
+attach 1
+```
+
+You can place these commands in a `gdbscript-custom` file so that in
+future they will be run automatically. If `monitor swdp_scan` fails to
+detect an attached nRF51 device then you may need to upgrade the
+firmware on your blackmagic to the latest version.
+
+To download code run
+
+```
+monitor erase_mass
+\# Only required if you are using a softdevice
+load_softdevice
+load
+```
+
+If the `load` command fails on a `uicr` section then you may not have
+blackmagic firmware that supports the `uicr` region. Either upgrade
+your blackmagic firmware or comment the UICR definition lines in
+[`inc/uicr`](inc/uicr) and
+`softdevice/uicr/<softdevice>_softdevice_uicr.c`.
 
 ## Emacs ##
 
