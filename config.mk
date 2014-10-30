@@ -1,5 +1,5 @@
 # Configuration makefile
-# Copyright (C) 2014
+# Copyright (C) 2014  Richard Meadows
 #
 # Permission is hereby granted, free of charge, to any person obtaining
 # a copy of this software and associated documentation files (the
@@ -42,6 +42,7 @@ COMPILATION_FLAGS	:= -g3 -ggdb
 # Acceptable Warnings
 #
 #
+#
 ACCEPT_WARN		:= -Wno-unused-parameter -Wno-old-style-declaration \
 				-Wno-unused-local-typedefs
 
@@ -71,10 +72,24 @@ BLACKMAGIC_PATH		:=
 # The Nordic SDK defines some macros for development kit boards. See
 # Include/boards in the SDK for more info.
 #
-BOARD			:=
+BOARD			:= BOARD_PCA10001
 
-# Application Sources
+# INCLUDEPATHS
 #
-# Add source files from the SDK that are used by the application here.
+# Folders from the SDK Include Directory. Copy this from the example
+# makefiles in the SDK
 #
-APP_SOURCES		+=
+INCLUDEPATHS	+=
+
+# C_SOURCE_FILES
+#
+# Add source files from the SDK here. You can copy this directly from
+# example makefiles in the SDK.
+#
+C_SOURCE_FILES +=
+#
+# Directories in the SDK Source Directory where the above
+# C_SOURCE_FILES can be found. Copy this from the example makefiles in
+# the SDK.
+#
+C_SOURCE_PATHS	+=

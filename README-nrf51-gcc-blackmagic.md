@@ -29,6 +29,8 @@ details can be found in the README.md files in each folder.
 User Information Configuation Register (UICR) settings for any
 softdevice need to be set in `uicr/<softdevice>_softdevice_uicr.c`.
 
+**Tested with softdevice s110_nrf51822_7.1.0**
+
 ### Project Options ###
 
 [`config.mk`](config.mk) allows configuation for individual

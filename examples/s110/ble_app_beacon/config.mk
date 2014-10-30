@@ -74,21 +74,32 @@ BLACKMAGIC_PATH		:=
 #
 BOARD			:= BOARD_PCA10001
 
-# Application Sources
+# INCLUDEPATHS
 #
-# Add source files from the SDK that are used by the application here.
+# Folders from the SDK Include Directory. Copy this from the example
+# makefiles in the SDK
 #
-APP_SOURCES		+= app_gpiote.c
-APP_SOURCES		+= app_button.c
-APP_SOURCES		+= app_timer.c
-APP_SOURCES		+= ble_advdata.c
-APP_SOURCES		+= ble_conn_params.c
-APP_SOURCES		+= ble_bas.c
-APP_SOURCES		+= ble_ias.c
-APP_SOURCES		+= ble_ias_c.c
-APP_SOURCES		+= ble_lls.c
-APP_SOURCES		+= ble_tps.c
-APP_SOURCES		+= ble_srv_common.c
-APP_SOURCES		+= crc16.c
-APP_SOURCES		+= softdevice_handler.c
-APP_SOURCES		+= ble_debug_assert_handler.c
+INCLUDEPATHS	+= s110
+INCLUDEPATHS	+= ble
+INCLUDEPATHS	+= ble/ble_services
+INCLUDEPATHS	+= app_common
+INCLUDEPATHS	+= sd_common
+
+# C_SOURCE_FILES
+#
+# Add source files from the SDK here. You can copy this directly from
+# example makefiles in the SDK.
+#
+C_SOURCE_FILES += softdevice_handler.c
+C_SOURCE_FILES += ble_advdata.c
+C_SOURCE_FILES += ble_debug_assert_handler.c
+C_SOURCE_FILES += ble_srv_common.c
+
+#
+# Directories in the SDK Source Directory where the above
+# C_SOURCE_FILES can be found. Copy this from the example makefiles in
+# the SDK.
+#
+C_SOURCE_PATHS	+= ble
+C_SOURCE_PATHS	+= app_common
+C_SOURCE_PATHS	+= sd_common

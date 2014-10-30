@@ -110,24 +110,19 @@ SDK_INCLUDE_PATH	+= $(SDK_PATH)Include/
 SDK_SOURCE_PATH		+= $(SDK_PATH)Source/
 CMSIS_INCLUDE_PATH 	+= $(SDK_PATH)Include/gcc/
 
-# Add the relavent bits of the SDK to our paths
+# Add the relavent bits of the SDK to our include path
 #
 #
 INCLUDE_PATH	+= $(SDK_INCLUDE_PATH)
+INCLUDE_PATH	+= $(addprefix $(SDK_INCLUDE_PATH),$(INCLUDEPATHS))
 INCLUDE_PATH	+= $(CMSIS_INCLUDE_PATH)
-SOURCE_PATH	+= $(SDK_SOURCE_PATH)
-SOURCE_PATH	+= $(wildcard $(SDK_SOURCE_PATH)*/)
 
 # Softdevice
 #
 #
 ifdef USE_SOFTDEVICE
-    INCLUDE_PATH	+= $(SDK_INCLUDE_PATH)$(USE_SOFTDEVICE)/
-    INCLUDE_PATH	+= $(SDK_INCLUDE_PATH)app_common/
-    INCLUDE_PATH	+= $(SDK_INCLUDE_PATH)sd_common/
-
     SOFTDEVICE		:= $(wildcard softdevice/$(USE_SOFTDEVICE)*_softdevice.hex)
-    SOFTD_SOURCES	:= softdevice/uicr/$(basename $(notdir $(SOFTDEVICE)))_uicr.c
+   SOFTD_SOURCES	:= softdevice/uicr/$(basename $(notdir $(SOFTDEVICE)))_uicr.c
 else
     USE_SOFTDEVICE = blank
 endif
@@ -153,10 +148,7 @@ endif
 #
 #
 ifdef USE_BLE
-    INCLUDE_PATH	+= $(SDK_INCLUDE_PATH)ble/
-    INCLUDE_PATH	+= $(SDK_INCLUDE_PATH)ble/ble_services/
-    SOURCE_PATH		+= $(SDK_SOURCE_PATH)ble/ble_services/
-    CFLAGS		+= -DBLE_STACK_SUPPORT_REQD
+    CFLAGS	+= -DBLE_STACK_SUPPORT_REQD
 endif
 
 # ANT includes
@@ -171,7 +163,7 @@ endif
 #
 #
 STARTUP		?= chip/startup_nrf51.s
-SYSTEMDEF	?= system_nrf51.c
+SYSTEMDEF	?= sdk/Source/templates/system_nrf51.c
 
 # Linker Scripts
 #
@@ -190,9 +182,13 @@ TARGET		:= $(OUTPUT_PATH)$(addsuffix _$(USE_SOFTDEVICE), $(PROJECT_NAME))
 # implications: Anything that makes it into your source tree will get
 # compiled and linked into your binary.
 #
-VPATH		= $(SOURCE_PATH)
 TREE_SOURCES	= $(shell $(FIND) $(SOURCE_TREE) -name '*.[csS]')
-SOURCES 	= $(STARTUP) $(SYSTEMDEF) $(TREE_SOURCES) $(APP_SOURCES) $(SOFTD_SOURCES)
+SDK_SOURCES	= $(sort $(foreach path,$(C_SOURCE_PATHS),$(foreach file,$(C_SOURCE_FILES),$(shell $(FIND) $(SDK_SOURCE_PATH)$(path) -name '$(file)'))))
+SOURCES 	= $(STARTUP) $(SYSTEMDEF) $(TREE_SOURCES) $(SDK_SOURCES) $(SOFTD_SOURCES)
+
+#path:
+#	echo $(SOURCES)
+
 
 # Translate this list of sources into a list of required objects in
 # the output directory.
