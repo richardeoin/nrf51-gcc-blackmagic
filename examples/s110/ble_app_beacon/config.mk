@@ -24,7 +24,7 @@
 #
 # This is used to define the name of the build artifact
 #
-PROJECT_NAME		:= ble_app_proximity
+PROJECT_NAME		:= ble_app_beacon
 
 # The exact chip being built for.
 #
