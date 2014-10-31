@@ -199,7 +199,7 @@ SOFTD_OBJECT	:= $(addprefix $(OUTPUT_PATH),$(basename $(SOFTDEVICE)))
 # Default target
 #
 #
-all: $(TARGET).elf softdevice
+all: $(TARGET).elf etags softdevice
 
 # Softdevice target
 #
@@ -302,6 +302,13 @@ print-symlinks:
 	@$(ECHO) 'Symlinks to $(DEVICE):'
 	@udevadm info --query symlink -n $(DEVICE) | \
 		$(SED) -e 's/ /\n/' | $(SED) -e 's/^/\t/'
+
+# Generates an etags file for the project
+#
+#
+etags: $(TAGFILES)
+	@$(ECHO) "Generating ETAGS..."
+	@etags $^
 
 # Removes everything in the output directory
 #
