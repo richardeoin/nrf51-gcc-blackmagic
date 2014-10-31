@@ -186,10 +186,6 @@ TREE_SOURCES	= $(shell $(FIND) $(SOURCE_TREE) -name '*.[csS]')
 SDK_SOURCES	= $(sort $(foreach path,$(C_SOURCE_PATHS),$(foreach file,$(C_SOURCE_FILES),$(shell $(FIND) $(SDK_SOURCE_PATH)$(path) -name '$(file)'))))
 SOURCES 	= $(STARTUP) $(SYSTEMDEF) $(TREE_SOURCES) $(SDK_SOURCES) $(SOFTD_SOURCES)
 
-#path:
-#	echo $(SOURCES)
-
-
 # Translate this list of sources into a list of required objects in
 # the output directory.
 objects		= $(patsubst %.c,%.o,$(patsubst %.s,%.o,$(patsubst %.S,%.o, \
