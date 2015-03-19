@@ -26,6 +26,8 @@
 # all				Everything
 # softdevice			Generates a softdevice object from .hex
 # print-symlinks DEVICE=<dev>	Prints any symlinks to a given device
+# etags				Generates an ETAGS file for the project
+# emacs				Launches emacs for this project
 # clean				Removes generated files
 #
 # This makefile is intended to be run from the root of the project.
@@ -196,6 +198,12 @@ OBJECTS		= $(addprefix $(OUTPUT_PATH),$(objects))
 #
 SOFTD_OBJECT	:= $(addprefix $(OUTPUT_PATH),$(basename $(SOFTDEVICE)))
 
+# Assemble a list of c and h files that are used in this project
+#
+TAGFILES	= $(SOURCES) $(shell $(CAT) $(OBJECTS:.o=.d) \
+			| $(SED) -n '/^.*\.h:/p' | $(SED) 's/://g')
+
+
 # Default target
 #
 #
@@ -309,6 +317,12 @@ print-symlinks:
 etags: $(TAGFILES)
 	@$(ECHO) "Generating ETAGS..."
 	@etags $^
+
+# Launches emacs with all the files used for this project
+#
+.PHONY: emacs
+emacs:
+	@emacs23 $(TAGFILES) Makefile config.mk README.md
 
 # Removes everything in the output directory
 #
