@@ -230,7 +230,7 @@ $(OUTPUT_PATH)%.o: %.c
 	@$(ECHO)
 	@$(ECHO) 'Compiling $<...'
 	@$(MKDIR) $(OUTPUT_PATH)$(dir $<)
-	$(CC) -c -MMD $(CPPFLAGS) $(CFLAGS) $(addprefix -I,$(INCLUDE_PATH)) -o $@ $<
+	$(CC) -c -MMD -MP $(CPPFLAGS) $(CFLAGS) $(addprefix -I,$(INCLUDE_PATH)) -o $@ $<
 	@$(SED) -e 's/#.*//' -e 's/^[^:]*: *//' -e 's/ *\\$$//' -e '/^$$/ d' \
 		-e 's/$$/ :/' < $(OUTPUT_PATH)$*.d >> $(OUTPUT_PATH)$*.d;
 
